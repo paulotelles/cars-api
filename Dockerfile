@@ -1,4 +1,4 @@
-FROM node:16.8.0-alpine3.13 as builder
+FROM node:14.17.6-alpine3.13 as builder
 
 
 ENV NODE_ENV build
@@ -18,7 +18,7 @@ RUN npm ci \
 # ---
 
 
-FROM node:16.8.0-alpine3.13
+FROM node:14.17.6-alpine3.13
 
 
 ENV NODE_ENV production
