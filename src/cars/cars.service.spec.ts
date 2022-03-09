@@ -61,7 +61,7 @@ describe('CarsService', () => {
   });
 
   describe('test findOne function', () => {
-    it('Should sucessfully find a car', async () => {
+    it('Should sucessfully find one car', async () => {
       jest
         .spyOn(model, 'findById')
         .mockResolvedValueOnce(CarFixture.getCarsFixture() as CarDocument);
@@ -69,7 +69,7 @@ describe('CarsService', () => {
       expect(newCar).toEqual(CarFixture.getCarsFixture());
     });
 
-    it('Should unsucessfully create a new car', async () => {
+    it('Should unsucessfully find one car', async () => {
       jest.spyOn(model, 'findById').mockResolvedValueOnce(null);
 
       await expect(
@@ -78,6 +78,23 @@ describe('CarsService', () => {
         new NotFoundException(
           `No car was found with id ${CarFixture.getCarsFixture()._id}.`,
         ),
+      );
+    });
+  });
+  describe('test find function', () => {
+    it('Should sucessfully find a car', async () => {
+      jest
+        .spyOn(model, 'find')
+        .mockResolvedValueOnce(CarFixture.getAllCarsFixture());
+      const newCars = await service.find();
+      expect(newCars).toEqual(CarFixture.getAllCarsFixture());
+    });
+
+    it('Should unsucessfully find a car', async () => {
+      jest.spyOn(model, 'find').mockResolvedValueOnce([]);
+
+      await expect(service.find()).rejects.toThrow(
+        new NotFoundException(`No car was found.`),
       );
     });
   });

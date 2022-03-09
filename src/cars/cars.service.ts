@@ -34,4 +34,15 @@ export class CarsService {
       throw error;
     }
   }
+  async find(): Promise<CarDocument[]> {
+    try {
+      const car = await this.carModel.find();
+      if (!car || car.length === 0) {
+        throw new NotFoundException(`No car was found.`);
+      }
+      return car as CarDocument[];
+    } catch (error) {
+      throw error;
+    }
+  }
 }

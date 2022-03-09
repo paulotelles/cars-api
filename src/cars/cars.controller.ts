@@ -40,4 +40,13 @@ export class CarsController {
   async findCar(@Param('id', ObjectIdPipe) id: string): Promise<CarDocument> {
     return this.carService.findOne(id);
   }
+
+  @Get()
+  @ApiFoundResponse({
+    description: 'When a car(s) was(were) found.',
+  })
+  @HttpCode(HttpStatus.FOUND)
+  async findAllCars(): Promise<CarDocument[]> {
+    return this.carService.find();
+  }
 }

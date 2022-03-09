@@ -22,4 +22,26 @@ export class CarFixture {
       price: 22000,
     };
   }
+  static getAllCarsFixture(): CarDocument[] {
+    return [
+      {
+        _id: '4ds65f165sd1f65ds1536',
+        brand: 'BMW',
+        model: 'BMW X5',
+        color: 'blue',
+        year: 2020,
+        licensePlate: 'BD34DS56',
+        price: 22000,
+      },
+      {
+        _id: '6228ebb75522f9dd0f69ef7c',
+        brand: 'Audi',
+        model: 'Audi TT',
+        color: 'red',
+        year: 2019,
+        licensePlate: 'RS34DS56',
+        price: 17000,
+      },
+    ] as CarDocument[];
+  }
 }
