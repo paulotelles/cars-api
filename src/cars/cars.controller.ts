@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -13,6 +14,8 @@ import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiFoundResponse,
+  ApiOkResponse,
+  ApiParam,
 } from '@nestjs/swagger';
 import { AvjValidationPipe } from '../pipes/ajv-validation.pipes';
 import { ObjectIdPipe } from '../pipes/mongoId-validation.pipes';
@@ -36,6 +39,11 @@ export class CarsController {
   @ApiFoundResponse({
     description: 'When a car was found with the provided id.',
   })
+  @ApiParam({
+    name: 'id',
+    format: 'string',
+    example: '6228f2b7b8dcd8e752467c61',
+  })
   @HttpCode(HttpStatus.FOUND)
   async findCar(@Param('id', ObjectIdPipe) id: string): Promise<CarDocument> {
     return this.carService.findOne(id);
@@ -48,5 +56,21 @@ export class CarsController {
   @HttpCode(HttpStatus.FOUND)
   async findAllCars(): Promise<CarDocument[]> {
     return this.carService.find();
+  }
+
+  @Delete('/:id')
+  @ApiOkResponse({
+    description: 'When a car was sucesfully deleted',
+  })
+  @ApiParam({
+    name: 'id',
+    format: 'string',
+    example: '6228f2b7b8dcd8e752467c61',
+  })
+  @HttpCode(HttpStatus.OK)
+  async deleteCar(
+    @Param('id', ObjectIdPipe) id: string,
+  ): Promise<Record<string, string>> {
+    return this.carService.delete(id);
   }
 }

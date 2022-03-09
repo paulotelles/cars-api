@@ -45,4 +45,16 @@ export class CarsService {
       throw error;
     }
   }
+  async delete(id: string): Promise<Record<string, string>> {
+    try {
+      const car = await this.carModel.findOneAndRemove({ _id: id });
+      if (!car) {
+        throw new NotFoundException(`No car was found with id ${id}.`);
+      }
+      console.log(car);
+      return { message: `Sucessfully deleted car with id ${id}` };
+    } catch (error) {
+      throw error;
+    }
+  }
 }

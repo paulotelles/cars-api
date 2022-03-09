@@ -26,7 +26,7 @@ describe('CarsService', () => {
             findById: jest.fn(),
             update: jest.fn(),
             create: jest.fn(),
-            remove: jest.fn(),
+            findOneAndRemove: jest.fn(),
             exec: jest.fn(),
           },
         },
@@ -95,6 +95,32 @@ describe('CarsService', () => {
 
       await expect(service.find()).rejects.toThrow(
         new NotFoundException(`No car was found.`),
+      );
+    });
+  });
+  describe('test delete function', () => {
+    it('Should sucessfully delete one car', async () => {
+      const message = {
+        message: `Sucessfully deleted car with id ${
+          CarFixture.getCarsFixture()._id
+        }`,
+      };
+      jest
+        .spyOn(model, 'findOneAndRemove')
+        .mockResolvedValueOnce(CarFixture.getCarsFixture());
+      const newCar = await service.delete(CarFixture.getCarsFixture()._id);
+      expect(newCar).toEqual(message);
+    });
+
+    it('Should unsucessfully find one car', async () => {
+      jest.spyOn(model, 'findById').mockResolvedValueOnce(null);
+
+      await expect(
+        service.delete(CarFixture.getCarsFixture()._id),
+      ).rejects.toThrow(
+        new NotFoundException(
+          `No car was found with id ${CarFixture.getCarsFixture()._id}.`,
+        ),
       );
     });
   });
