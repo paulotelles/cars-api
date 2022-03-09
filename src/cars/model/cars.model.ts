@@ -2,8 +2,6 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 import { ApiProperty } from '@nestjs/swagger';
 import { Document } from 'mongoose';
-import { Helper } from '../../utils/helper';
-import { JSONSchemaType } from 'ajv';
 
 export type CarDocument = Car & Document;
 
@@ -31,39 +29,13 @@ export class Car {
   @Prop()
   @ApiProperty({ description: "Must inform the cars's brand", example: 1999 })
   year: number;
-}
 
-export const CarJsonSchema: JSONSchemaType<Car> = {
-  type: 'object',
-  required: ['brand', 'color', 'model', 'licensePlate', 'year'],
-  properties: {
-    brand: {
-      type: 'string',
-      minLength: 3,
-      maxLength: 60,
-    },
-    color: {
-      type: 'string',
-      minLength: 3,
-      maxLength: 60,
-    },
-    model: {
-      type: 'string',
-      minLength: 3,
-      maxLength: 60,
-    },
-    licensePlate: {
-      type: 'string',
-      minLength: 8,
-      maxLength: 8,
-    },
-    year: {
-      type: 'number',
-      minimum: 1900,
-      maximum: Helper.getYear(),
-    },
-  },
-  additionalProperties: false,
-};
+  @Prop()
+  @ApiProperty({
+    description: "Must inform the cars's brand",
+    example: 1400.55,
+  })
+  price: number;
+}
 
 export const CarSchema = SchemaFactory.createForClass(Car);
