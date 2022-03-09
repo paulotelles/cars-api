@@ -15,7 +15,6 @@ export class AvjValidationPipe implements PipeTransform {
     const validate = ajv.compile(this.schema);
     const valid = validate(value);
     if (!valid) {
-      console.log(validate.errors);
       const message = validate.errors?.map((error) => {
         return {
           field: error.instancePath.substring(1),
