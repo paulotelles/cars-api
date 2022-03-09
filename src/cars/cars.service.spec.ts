@@ -1,9 +1,12 @@
 import { Car, CarDocument } from './model/cars.model';
+import {
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { CarFixture } from '../../test/fixture/cars.fixture';
 import { CarsService } from './cars.service';
-import { InternalServerErrorException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
 
@@ -20,6 +23,7 @@ describe('CarsService', () => {
           useValue: {
             find: jest.fn(),
             findOne: jest.fn(),
+            findById: jest.fn(),
             update: jest.fn(),
             create: jest.fn(),
             remove: jest.fn(),
@@ -36,21 +40,45 @@ describe('CarsService', () => {
     expect(service).toBeDefined();
   });
 
-  it('Should sucessfully create a new car', async () => {
-    jest
-      .spyOn(model, 'create')
-      .mockImplementationOnce(() =>
-        Promise.resolve(CarFixture.getCarsFixture()),
-      );
-    const newCar = await service.create(CarFixture.getRequestCarsFixture());
-    expect(newCar).toEqual(CarFixture.getCarsFixture());
+  describe('test create function', () => {
+    it('Should sucessfully create a new car', async () => {
+      jest
+        .spyOn(model, 'create')
+        .mockImplementationOnce(() =>
+          Promise.resolve(CarFixture.getCarsFixture()),
+        );
+      const newCar = await service.create(CarFixture.getRequestCarsFixture());
+      expect(newCar).toEqual(CarFixture.getCarsFixture());
+    });
+
+    it('Should unsucessfully create a new car', async () => {
+      jest.spyOn(model, 'create').mockImplementationOnce(() => false);
+
+      await expect(
+        service.create(CarFixture.getRequestCarsFixture()),
+      ).rejects.toThrow(InternalServerErrorException);
+    });
   });
 
-  it('Should unsucessfully create a new car', async () => {
-    jest.spyOn(model, 'create').mockImplementationOnce(() => false);
+  describe('test findOne function', () => {
+    it('Should sucessfully find a car', async () => {
+      jest
+        .spyOn(model, 'findById')
+        .mockResolvedValueOnce(CarFixture.getCarsFixture() as CarDocument);
+      const newCar = await service.findOne(CarFixture.getCarsFixture()._id);
+      expect(newCar).toEqual(CarFixture.getCarsFixture());
+    });
 
-    await expect(
-      service.create(CarFixture.getRequestCarsFixture()),
-    ).rejects.toThrow(InternalServerErrorException);
+    it('Should unsucessfully create a new car', async () => {
+      jest.spyOn(model, 'findById').mockResolvedValueOnce(null);
+
+      await expect(
+        service.findOne(CarFixture.getCarsFixture()._id),
+      ).rejects.toThrow(
+        new NotFoundException(
+          `No car was found with id ${CarFixture.getCarsFixture()._id}.`,
+        ),
+      );
+    });
   });
 });
