@@ -59,7 +59,7 @@ export class CarsService {
   async update(id: string, body: Partial<Car>): Promise<CarDocument> {
     try {
       const car = await this.carModel.findOneAndUpdate({ _id: id }, body, {
-        returnOriginal: false
+        returnOriginal: false,
       });
       if (!car) {
         throw new NotFoundException(`No car was found with id ${id}.`);

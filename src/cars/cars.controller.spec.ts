@@ -1,4 +1,3 @@
-import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { MockType, carsServiceMockFactory } from '../../test/test-helper';
 import { Test, TestingModule } from '@nestjs/testing';
 

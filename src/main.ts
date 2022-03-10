@@ -12,6 +12,15 @@ async function bootstrap() {
     .setTitle('Cars API')
     .setDescription('This API was developped as part of a test for Cognigy')
     .setVersion('1.0')
+    .addApiKey(
+      {
+        type: 'apiKey',
+        name: 'x-api-key',
+        in: 'header',
+        scheme: 'bearer',
+      },
+      'x-api-key',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

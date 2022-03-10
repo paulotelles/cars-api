@@ -1,3 +1,4 @@
+import { AuthModule } from './auth/auth.module';
 import { CarsModule } from './cars/cars.module';
 import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
@@ -8,6 +9,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     ConfigModule.forRoot(),
     CarsModule,
     MongooseModule.forRoot(process.env.MONGO_URI || ''),
+    AuthModule,
   ],
   controllers: [],
   providers: [],
