@@ -1,6 +1,7 @@
 import { Car } from '../model/cars.model';
 import { Helper } from '../../utils/helper';
 import { JSONSchemaType } from 'ajv';
+import { stringify } from 'querystring';
 
 export const carJsonSchema: JSONSchemaType<Car> = {
   type: 'object',
@@ -39,9 +40,22 @@ export const carJsonSchema: JSONSchemaType<Car> = {
   additionalProperties: false,
 };
 
-export const updateCarJsonSchema: JSONSchemaType<Car> = {
-  type: 'object',
-  required: [],
-  properties: { ...JSON.parse(JSON.stringify(carJsonSchema.properties)) },
-  additionalProperties: false,
+export const updateCarJsonSchema = (): JSONSchemaType<Car> => {
+  const props = JSON.parse(JSON.stringify(carJsonSchema.properties));
+  const anyOf = Object.keys(props).reduce(
+    (initialValue, currentValue): Record<string, Array<string>>[] => {
+      const message = { required: [currentValue] };
+      initialValue.push(message);
+      return initialValue;
+    },
+    [] as Record<string, Array<string>>[],
+  );
+
+  return {
+    type: 'object',
+    required: [],
+    properties: { ...props },
+    additionalProperties: false,
+    anyOf: anyOf,
+  };
 };

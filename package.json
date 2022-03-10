@@ -75,6 +75,15 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
+    "coveragePathIgnorePatterns": [
+      "test",
+      ".*\\.providers\\.ts$",
+      ".*\\.module\\.ts$",
+      ".*\\..*spec\\.ts$",
+      "src/main.ts",
+      "src/app.module.ts",
+      "src/health/health.controller.ts"
+    ],
     "testEnvironment": "node"
   }
 }

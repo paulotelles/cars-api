@@ -22,12 +22,10 @@ describe('CarsService', () => {
           provide: getModelToken(Car.name),
           useValue: {
             find: jest.fn(),
-            findOne: jest.fn(),
             findById: jest.fn(),
-            update: jest.fn(),
+            findOneAndUpdate: jest.fn(),
             create: jest.fn(),
             findOneAndRemove: jest.fn(),
-            exec: jest.fn(),
           },
         },
       ],
@@ -117,6 +115,30 @@ describe('CarsService', () => {
 
       await expect(
         service.delete(CarFixture.getCarsFixture()._id),
+      ).rejects.toThrow(
+        new NotFoundException(
+          `No car was found with id ${CarFixture.getCarsFixture()._id}.`,
+        ),
+      );
+    });
+  });
+  describe('test update function', () => {
+    it('Should sucessfully update one car', async () => {
+      const originalCar = CarFixture.getCarsFixture();
+      const updatedCar: CarDocument = JSON.parse(JSON.stringify(originalCar));
+      updatedCar.color = 'red';
+      jest.spyOn(model, 'findOneAndUpdate').mockResolvedValueOnce(updatedCar);
+      const newCar = await service.update(CarFixture.getCarsFixture()._id, {
+        color: 'red',
+      });
+      expect(newCar).toEqual(updatedCar);
+    });
+
+    it('Should unsucessfully update one car', async () => {
+      jest.spyOn(model, 'findOneAndUpdate').mockResolvedValueOnce(null);
+
+      await expect(
+        service.update(CarFixture.getCarsFixture()._id, { color: 'red' }),
       ).rejects.toThrow(
         new NotFoundException(
           `No car was found with id ${CarFixture.getCarsFixture()._id}.`,

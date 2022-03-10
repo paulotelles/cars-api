@@ -51,8 +51,20 @@ export class CarsService {
       if (!car) {
         throw new NotFoundException(`No car was found with id ${id}.`);
       }
-      console.log(car);
       return { message: `Sucessfully deleted car with id ${id}` };
+    } catch (error) {
+      throw error;
+    }
+  }
+  async update(id: string, body: Partial<Car>): Promise<CarDocument> {
+    try {
+      const car = await this.carModel.findOneAndUpdate({ _id: id }, body, {
+        returnOriginal: false
+      });
+      if (!car) {
+        throw new NotFoundException(`No car was found with id ${id}.`);
+      }
+      return car;
     } catch (error) {
       throw error;
     }

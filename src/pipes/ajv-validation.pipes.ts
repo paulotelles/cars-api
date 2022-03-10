@@ -6,6 +6,8 @@ import {
   PipeTransform,
 } from '@nestjs/common';
 
+import { Helper } from '../utils/helper';
+
 @Injectable()
 export class AvjValidationPipe implements PipeTransform {
   constructor(private schema: Schema) {}
@@ -17,7 +19,9 @@ export class AvjValidationPipe implements PipeTransform {
     if (!valid) {
       const message = validate.errors?.map((error) => {
         return {
-          field: error.instancePath.substring(1),
+          field: error.instancePath
+            ? error.instancePath.substring(1)
+            : error.params.additionalProperty,
           message: error.message,
         };
       });

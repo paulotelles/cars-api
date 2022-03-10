@@ -8,10 +8,12 @@ import {
   Inject,
   Param,
   Post,
+  Put,
   UsePipes,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBody,
   ApiCreatedResponse,
   ApiFoundResponse,
   ApiOkResponse,
@@ -21,7 +23,7 @@ import { AvjValidationPipe } from '../pipes/ajv-validation.pipes';
 import { ObjectIdPipe } from '../pipes/mongoId-validation.pipes';
 import { CarsService } from './cars.service';
 import { Car, CarDocument } from './model/cars.model';
-import { carJsonSchema } from './schema/cars.schema';
+import { carJsonSchema, updateCarJsonSchema } from './schema/cars.schema';
 
 @Controller('cars')
 export class CarsController {
@@ -72,5 +74,27 @@ export class CarsController {
     @Param('id', ObjectIdPipe) id: string,
   ): Promise<Record<string, string>> {
     return this.carService.delete(id);
+  }
+
+  @Put('/:id')
+  @ApiOkResponse({
+    description: 'When a car was sucesfully deleted',
+  })
+  @ApiBadRequestResponse({
+    description:
+      'When the payload is invalid, necessary to inform at least one property to change',
+  })
+  @ApiParam({
+    name: 'id',
+    format: 'string',
+    example: '6228f2b7b8dcd8e752467c61',
+  })
+  @ApiBody({ type: Car })
+  @HttpCode(HttpStatus.OK)
+  async updateCar(
+    @Param('id', ObjectIdPipe) id: string,
+    @Body(new AvjValidationPipe(updateCarJsonSchema())) body: Partial<Car>,
+  ): Promise<CarDocument> {
+    return this.carService.update(id, body);
   }
 }
