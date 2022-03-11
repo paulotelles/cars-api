@@ -33,6 +33,11 @@ jobs:
           npm install
           npm run test
       
+      - name: e2e Tests
+        run: |-
+          npm install
+          npm run test:e2e
+      
       - name: Code Coverage
         run: |-
           npm install
