@@ -19,6 +19,7 @@ import {
   ApiBody,
   ApiCreatedResponse,
   ApiFoundResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiParam,
   ApiSecurity,
@@ -51,6 +52,12 @@ export class CarsController {
   @Get('/:id')
   @ApiFoundResponse({
     description: 'When a car was found with the provided id.',
+  })
+  @ApiNotFoundResponse({
+    description: 'When no car was found.',
+  })
+  @ApiBadRequestResponse({
+    description: 'When the id provided is not in ObjectId format',
   })
   @ApiParam({
     name: 'id',

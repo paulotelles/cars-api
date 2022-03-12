@@ -22,6 +22,15 @@ export class CarFixture {
       price: 22000,
     };
   }
+  static getBadRequestCarsFixture() {
+    return {
+      brand: 'BMW',
+      model: 'BMW X5',
+      color: 'blue',
+      year: 2020,
+      licensePlate: 'BD34DS56',
+    };
+  }
   static getAllCarsFixture(): CarDocument[] {
     return [
       {
