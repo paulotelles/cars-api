@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+env:
+  API_KEY: DDFs8d7aahdj 
 jobs:
   build:
     runs-on: ubuntu-latest

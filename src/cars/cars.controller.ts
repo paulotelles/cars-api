@@ -45,7 +45,6 @@ export class CarsController {
   @ApiBadRequestResponse({ description: 'When the payload is invalid ' })
   @HttpCode(HttpStatus.CREATED)
   async createCar(@Body() body: Car): Promise<CarDocument> {
-    console.log('cheguei aqui');
     return this.carService.create(body);
   }
 

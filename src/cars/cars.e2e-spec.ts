@@ -1,6 +1,7 @@
 import * as request from 'supertest';
 
 import { Car, CarDocument, CarSchema } from './model/cars.model';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Model, connection, disconnect } from 'mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -13,10 +14,13 @@ import { AuthModule } from '../auth/auth.module';
 import { CarFixture } from '../../test/fixture/cars.fixture';
 import { CarsController } from './cars.controller';
 import { CarsService } from './cars.service';
-import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
 let HEADERS;
+
+const envVariablesToUse = {
+  'API-KEY': 'abcde832',
+};
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -50,7 +54,6 @@ describe('AppController (e2e)', () => {
     jest.clearAllMocks();
     jest.resetAllMocks();
   });
-
 
   afterAll(async () => {
     await closeInMongodConnection((await testMongo).connection);
