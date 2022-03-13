@@ -22,6 +22,16 @@ export class CarFixture {
       price: 22000,
     };
   }
+  static getRequestCarsFixtureV2() {
+    return {
+      brand: 'Audi',
+      model: 'Audi TT',
+      color: 'white',
+      year: 2008,
+      licensePlate: 'G9NKRWF8',
+      price: 10000,
+    };
+  }
   static getBadRequestCarsFixture() {
     return {
       brand: 'BMW',
