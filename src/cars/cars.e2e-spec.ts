@@ -190,8 +190,6 @@ describe('AppController (e2e)', () => {
   });
   describe('Shoud test (GET) in /cars route', () => {
     it('Should return an array of cars on GET', async () => {
-      const carOne = await myModel.create(CarFixture.getRequestCarsFixture());
-      const carTwo = await myModel.create(CarFixture.getRequestCarsFixtureV2());
       return request(app.getHttpServer())
         .get('/cars')
         .set(HEADERS)
@@ -347,7 +345,6 @@ describe('AppController (e2e)', () => {
         });
     });
     it('Should return BadRequest', async () => {
-      const car = await myModel.create(CarFixture.getRequestCarsFixture());
       const payload = CarFixture.getRequestCarsFixtureV2();
       const invalidMongoId = 'abcde3';
       const getParam = `/cars/${invalidMongoId}`;

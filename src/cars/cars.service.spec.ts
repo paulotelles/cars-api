@@ -62,7 +62,7 @@ describe('CarsService', () => {
     it('Should sucessfully find one car', async () => {
       jest
         .spyOn(model, 'findById')
-        .mockResolvedValueOnce(CarFixture.getCarsFixture() as CarDocument);
+        .mockResolvedValueOnce(CarFixture.getCarsFixture());
       const newCar = await service.findOne(CarFixture.getCarsFixture()._id);
       expect(newCar).toEqual(CarFixture.getCarsFixture());
     });
