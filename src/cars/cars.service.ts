@@ -6,6 +6,8 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Car, CarDocument } from './model/cars.model';
 import { Model } from 'mongoose';
+import { EXCEPTIONS, SUCESSFULL_DELETE } from '../constants';
+import { Helper } from '../utils/helper';
 
 @Injectable()
 export class CarsService {
@@ -14,9 +16,7 @@ export class CarsService {
     try {
       const car = this.carModel.create(carSchema);
       if (!car) {
-        throw new InternalServerErrorException(
-          'Internal Error, try again later.',
-        );
+        throw new InternalServerErrorException(EXCEPTIONS.INTERNAL_ERROR);
       }
       return car;
     } catch (error) {
@@ -27,7 +27,9 @@ export class CarsService {
     try {
       const car = await this.carModel.findById(id);
       if (!car) {
-        throw new NotFoundException(`No car was found with id ${id}.`);
+        throw new NotFoundException(
+          Helper.formatString(EXCEPTIONS.NOT_FOUND_ID, id),
+        );
       }
       return car as CarDocument;
     } catch (error) {
@@ -38,7 +40,7 @@ export class CarsService {
     try {
       const car = await this.carModel.find();
       if (!car || car.length === 0) {
-        throw new NotFoundException(`No car was found.`);
+        throw new NotFoundException(EXCEPTIONS.NOT_FOUND);
       }
       return car as CarDocument[];
     } catch (error) {
@@ -49,9 +51,11 @@ export class CarsService {
     try {
       const car = await this.carModel.findOneAndRemove({ _id: id });
       if (!car) {
-        throw new NotFoundException(`No car was found with id ${id}.`);
+        throw new NotFoundException(
+          Helper.formatString(EXCEPTIONS.NOT_FOUND_ID, id),
+        );
       }
-      return { message: `Sucessfully deleted car with id ${id}` };
+      return { message: Helper.formatString(SUCESSFULL_DELETE.MESSAGE, id) };
     } catch (error) {
       throw error;
     }
@@ -62,7 +66,9 @@ export class CarsService {
         returnOriginal: false,
       });
       if (!car) {
-        throw new NotFoundException(`No car was found with id ${id}.`);
+        throw new NotFoundException(
+          Helper.formatString(EXCEPTIONS.NOT_FOUND_ID, id),
+        );
       }
       return car;
     } catch (error) {
