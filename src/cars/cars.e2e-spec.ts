@@ -190,6 +190,8 @@ describe('AppController (e2e)', () => {
   });
   describe('Shoud test (GET) in /cars route', () => {
     it('Should return an array of cars on GET', async () => {
+      await myModel.create(CarFixture.getRequestCarsFixture());
+      await myModel.create(CarFixture.getRequestCarsFixtureV2());
       return request(app.getHttpServer())
         .get('/cars')
         .set(HEADERS)
