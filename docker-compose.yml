@@ -1,0 +1,35 @@
+version: '3.6'
+
+services:
+  main:
+    container_name: main
+    image: nestjs-api-dev:1.0.0
+    build:      
+      context: .
+      dockerfile: ./Dockerfile
+    ports:      
+      - 3000:3000      
+      - 3001:9229  
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env
+    networks:
+      - webnet
+    depends_on:
+      - mongo_db
+
+  mongo_db:
+    container_name: mongo_db
+    image: mongo:latest
+    networks:
+      - webnet
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: 'user'
+      MONGO_INITDB_ROOT_PASSWORD: 'password'
+      MONGO_INITDB_DATABASE: 'cognigy'
+    expose:
+      - '27017'
+networks:
+  webnet:
+    driver: bridge
