@@ -5,6 +5,9 @@ This is a part of Cognigy, the objective is to build an API to create, delete, u
 
 ## Requirements
 
+Build a Node.JS based which uses the Express.JS framework to expose a RESTful API
+to manage cars.
+
 Use:
 - modern Node.JS (node 12), ES7 / ES8 :heavy_check_mark:
 - use a linter :heavy_check_mark:
@@ -54,7 +57,7 @@ Clone this github repository
 $ npm install
 ```
 
-First of all, create .env file in the main folder and add mongodb URI and de x-api-key as in the .env-example.
+First of all, create .env file in the main folder and add mongodb URI and de x-api-key as in the .env-example. (the env-example already has the MONGO_URI to use with docker-compose).
 
 ## Running the app in the container
 
