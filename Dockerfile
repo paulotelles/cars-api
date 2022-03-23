@@ -18,7 +18,7 @@ RUN npm ci \
 # ---
 
 
-FROM node:14.17.6
+FROM node:14.17.6-alpine3.13
 
 
 ENV NODE_ENV production
